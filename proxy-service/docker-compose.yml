@@ -40,11 +40,11 @@ services:
     environment:
       DATABASE_URL: postgresql://proxy_user:proxy_pass@postgres:5432/proxy_db
       REDIS_URL: redis://redis:6379/0
-      SECRET_KEY: your-secret-key-change-in-production
+      SECRET_KEY: super-secret-key
       SMTP_HOST: smtp.mailtrap.io
       SMTP_PORT: 2525
-      SMTP_USER: your_mailtrap_user
-      SMTP_PASSWORD: your_mailtrap_password
+      SMTP_USER: mailtrap_username
+      SMTP_PASSWORD: mailtrap_password
     depends_on:
       postgres:
         condition: service_healthy
@@ -60,11 +60,11 @@ services:
     environment:
       DATABASE_URL: postgresql://proxy_user:proxy_pass@postgres:5432/proxy_db
       REDIS_URL: redis://redis:6379/0
-      SECRET_KEY: your-secret-key-change-in-production
+      SECRET_KEY: super-secret-key
       SMTP_HOST: smtp.mailtrap.io
       SMTP_PORT: 2525
-      SMTP_USER: your_mailtrap_user
-      SMTP_PASSWORD: your_mailtrap_password
+      SMTP_USER: mailtrap_username
+      SMTP_PASSWORD: mailtrap_password
     depends_on:
       postgres:
         condition: service_healthy
