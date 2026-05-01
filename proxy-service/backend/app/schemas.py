@@ -1,11 +1,33 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, field_validator
 from typing import Optional
 from datetime import datetime
+
+PASSWORD_MIN_LENGTH = 8
+PASSWORD_MAX_LENGTH = 72
 
 class UserRegister(BaseModel):
     email: EmailStr
     password: str
     confirm_password: str
+
+    @field_validator('password', 'confirm_password')
+    def validate_password_length(cls, v):
+        byte_length = len(v.encode('utf-8'))
+        if byte_length > PASSWORD_MAX_LENGTH:
+            raise ValueError(
+                f'Password too long: {byte_length} bytes (max {PASSWORD_MAX_LENGTH})'
+            )
+        if byte_length < PASSWORD_MIN_LENGTH:
+            raise ValueError(
+                f'Password too short: {byte_length} bytes (min {PASSWORD_MIN_LENGTH})'
+            )
+        return v
+
+    @field_validator('confirm_password')
+    def validate_passwords_match(cls, v, info):
+        if 'password' in info.data and v != info.data['password']:
+            raise ValueError('Passwords do not match')
+        return v
 
 class UserLogin(BaseModel):
     email: EmailStr
@@ -35,6 +57,19 @@ class ProxyResponse(BaseModel):
 class ChangePassword(BaseModel):
     old_password: str
     new_password: str
+
+    @field_validator('old_password', 'new_password')
+    def validate_password_length(cls, v):
+        byte_length = len(v.encode('utf-8'))
+        if byte_length > PASSWORD_MAX_LENGTH:
+            raise ValueError(
+                f'Password too long: {byte_length} bytes (max {PASSWORD_MAX_LENGTH})'
+            )
+        if byte_length < PASSWORD_MIN_LENGTH:
+            raise ValueError(
+                f'Password too short: {byte_length} bytes (min {PASSWORD_MIN_LENGTH})'
+            )
+        return v
 
 class RefreshKeyResponse(BaseModel):
     message: str

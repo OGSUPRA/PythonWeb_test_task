@@ -8,14 +8,16 @@ from app.database import get_db
 from app.models import User
 from app.config import settings
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["bcrypt_sha256"], deprecated="auto")
 security = HTTPBearer()
 
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
 def get_password_hash(password):
-    return pwd_context.hash(password)
+     if len(password.encode('utf-8')) > 72:
+        password = password[:72]  # обрезаем пароль до 72 байт
+     return pwd_context.hash(password)
 
 def create_access_token(data: dict):
     to_encode = data.copy()
