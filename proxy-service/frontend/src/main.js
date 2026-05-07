@@ -26,12 +26,24 @@ const routes = [
   { path: '/', redirect: '/login' },
   { path: '/register', component: Register },
   { path: '/login', component: Login },
-  { path: '/profile', component: Profile }
+  { path: '/profile', component: Profile, meta: { requiresAuth: true } }
 ]
 
 const router = createRouter({
   history: createWebHistory(),
   routes
+})
+
+router.beforeEach((to) => {
+  const isLoggedIn = !!localStorage.getItem('token')
+
+  if (to.meta.requiresAuth && !isLoggedIn) {
+    return '/login'
+  }
+
+  if (isLoggedIn && (to.path === '/login' || to.path === '/register')) {
+    return '/profile'
+  }
 })
 
 const app = createApp(App)

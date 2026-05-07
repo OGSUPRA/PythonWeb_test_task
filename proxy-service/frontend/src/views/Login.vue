@@ -61,7 +61,7 @@ export default {
       try {
         const response = await axios.post('/api/login', this.form)
         localStorage.setItem('token', response.data.access_token)
-        this.$emit('login')
+        this.$router.push('/profile')
       } catch (error) {
         this.snackbar = {
           show: true,

@@ -8,7 +8,7 @@
     
     <v-main>
       <v-container fluid>
-        <router-view @login="handleLogin" />
+        <router-view />
       </v-container>
     </v-main>
   </v-app>
@@ -22,16 +22,20 @@ export default {
     }
   },
   mounted() {
-    this.isLoggedIn = !!localStorage.getItem('token')
+    this.syncAuthState()
+  },
+  watch: {
+    $route() {
+      this.syncAuthState()
+    }
   },
   methods: {
-    handleLogin() {
-      this.isLoggedIn = true
-      this.$router.push('/profile')
+    syncAuthState() {
+      this.isLoggedIn = !!localStorage.getItem('token')
     },
     logout() {
       localStorage.removeItem('token')
-      this.isLoggedIn = false
+      this.syncAuthState()
       this.$router.push('/login')
     }
   }
