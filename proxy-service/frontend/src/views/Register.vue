@@ -70,7 +70,7 @@ export default {
         await axios.post('/api/register', this.form)
         this.snackbar = {
           show: true,
-          text: 'Registration successful! Check your email for activation key.',
+          text: 'Registration successful! Check your email or Celery worker logs for the activation key.',
           color: 'success'
         }
         setTimeout(() => {

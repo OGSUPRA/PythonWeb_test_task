@@ -17,6 +17,23 @@
               </v-list-item-subtitle>
             </v-list-item>
           </v-list>
+
+          <v-alert
+            type="info"
+            variant="tonal"
+            class="my-4"
+            text="Use this key in the desktop client to get a proxy server and receive real-time connection status."
+          ></v-alert>
+
+          <v-btn
+            v-if="user.activation_key"
+            class="mb-4"
+            color="secondary"
+            variant="outlined"
+            @click="copyActivationKey"
+          >
+            Copy Activation Key
+          </v-btn>
           
           <v-divider class="my-4"></v-divider>
           
@@ -117,6 +134,26 @@ export default {
         }
       } finally {
         this.refreshing = false
+      }
+    },
+    async copyActivationKey() {
+      if (!this.user.activation_key) {
+        return
+      }
+
+      try {
+        await navigator.clipboard.writeText(this.user.activation_key)
+        this.snackbar = {
+          show: true,
+          text: 'Activation key copied to clipboard!',
+          color: 'success'
+        }
+      } catch (error) {
+        this.snackbar = {
+          show: true,
+          text: 'Failed to copy activation key',
+          color: 'error'
+        }
       }
     },
     async changePassword() {
