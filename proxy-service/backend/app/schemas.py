@@ -54,6 +54,27 @@ class ProxyResponse(BaseModel):
     port: int
     protocol: str
 
+
+class VirtualMachineResponse(ProxyResponse):
+    name: str
+
+
+class ConnectionStatusResponse(BaseModel):
+    user_id: int
+    status: str
+    message: str
+    vm: Optional[VirtualMachineResponse] = None
+    updated_at: datetime
+
+
+class DesktopSessionResponse(ProxyResponse):
+    user_id: int
+    token_type: str
+    access_token: str
+    ws_url: str
+    status: str
+    message: str
+
 class ChangePassword(BaseModel):
     old_password: str
     new_password: str
@@ -74,3 +95,8 @@ class ChangePassword(BaseModel):
 class RefreshKeyResponse(BaseModel):
     message: str
     activation_key: str
+
+
+class MessageResponse(BaseModel):
+    message: str
+    status: str
